@@ -11,20 +11,11 @@ import java.util.Scanner;
 
 public class Ejercicios_2 {
 
-    private static final String RUTA_FICHERO = "datos/";
-    private static final String FICHERO_ALEATORIOS = "num_aleat.bin";
-    private static final String FICHERO_VEHICULOS = "vehiculos.bin";
-    private static final String FICHERO_BECAS = "datosbeca.bin";
-    private static final String FICHERO_PERSONAS = "datospersonas.dat";
-    private static final String FICHERO_MUCHOS_DATOS = "muchosdatos.bin";
-    private static final String FICHERO_TEMPERATURAS = "temperaturas.txt";
-    private static final String FICHERO_SEPTEMP = "Septemp.dat";
-    private static final String FICHERO_NOMINAS = "nominas.bin";
+    private static final String RUTA_FICHERO = "src/";
 
     private static final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-        new File(RUTA_FICHERO).mkdirs();
         ejercicio1();
         ejercicio2();
         ejercicio3();
@@ -95,17 +86,17 @@ public class Ejercicios_2 {
         int minimo = leerEntero("Límite inferior del rango (positivo): ", 1, Integer.MAX_VALUE);
         int maximo = leerEntero("Límite superior del rango: ", minimo, Integer.MAX_VALUE);
 
-        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + FICHERO_ALEATORIOS, true))) {
+        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "num_aleat.bin", true))) {
             for (int i = 0; i < cantidad; i++) {
                 int numero = (int) (minimo + Math.random() * ((long) maximo - minimo + 1));
                 escribirFichero.writeInt(numero);
             }
-            System.out.println("Se han añadido " + cantidad + " números al fichero " + FICHERO_ALEATORIOS + ".");
+            System.out.println("Se han añadido " + cantidad + " números al fichero num_aleat.bin.");
         } catch (IOException e) {
             System.out.println("Error al escribir el fichero.");
         }
 
-        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + FICHERO_ALEATORIOS))) {
+        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + "num_aleat.bin"))) {
             System.out.println("Contenido del fichero:");
             int total = 0;
             while (true) {
@@ -126,10 +117,9 @@ public class Ejercicios_2 {
 
     public static void ejercicio2() {
         System.out.println("\nEjercicio 2: vehículos");
-        System.out.println("\nEjercicio 2: vehículos");
         int cantidad = leerEntero("Número de vehículos a introducir: ", 1, Integer.MAX_VALUE);
 
-        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + FICHERO_VEHICULOS, true))) {
+        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "vehiculos.bin", true))) {
             for (int i = 1; i <= cantidad; i++) {
                 System.out.println("Vehículo " + i + ":");
                 String matricula = leerTexto("  Matrícula: ");
@@ -145,7 +135,7 @@ public class Ejercicios_2 {
             System.out.println("Error al escribir el fichero.");
         }
 
-        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + FICHERO_VEHICULOS))) {
+        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + "vehiculos.bin"))) {
             System.out.println("Vehículos almacenados:");
             while (true) {
                 String matricula = leerFichero.readUTF();
@@ -182,9 +172,9 @@ public class Ejercicios_2 {
 
     public static void ejercicio3() {
         System.out.println("\nEjercicio 3: un becario");
-        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + FICHERO_BECAS))) {
+        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "datosbeca.bin"))) {
             guardarBecario(escribirFichero);
-            System.out.println("Datos guardados en " + FICHERO_BECAS + " (" + new File(RUTA_FICHERO + FICHERO_BECAS).length() + " bytes).");
+            System.out.println("Datos guardados en datosbeca.bin (" + new File(RUTA_FICHERO + "datosbeca.bin").length() + " bytes).");
         } catch (IOException e) {
             System.out.println("Error al escribir el fichero.");
         }
@@ -194,7 +184,7 @@ public class Ejercicios_2 {
         System.out.println("\nEjercicio 4: varios becarios");
         int cantidad = leerEntero("Número de becarios a introducir: ", 1, Integer.MAX_VALUE);
 
-        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + FICHERO_BECAS, true))) {
+        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "datosbeca.bin", true))) {
             for (int i = 1; i <= cantidad; i++) {
                 System.out.println("Becario " + i + ":");
                 guardarBecario(escribirFichero);
@@ -203,7 +193,7 @@ public class Ejercicios_2 {
             System.out.println("Error al escribir el fichero.");
         }
 
-        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + FICHERO_BECAS))) {
+        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + "datosbeca.bin"))) {
             System.out.println("Becarios almacenados:");
             while (true) {
                 String nombre = leerFichero.readUTF();
@@ -227,13 +217,13 @@ public class Ejercicios_2 {
 
     public static void ejercicio5() {
         System.out.println("\nEjercicio 5: cuantía de las becas");
-        if (!new File(RUTA_FICHERO + FICHERO_BECAS).exists()) {
-            System.out.println("El fichero " + FICHERO_BECAS + " no existe. Ejecuta antes el ejercicio 4.");
+        if (!new File(RUTA_FICHERO + "datosbeca.bin").exists()) {
+            System.out.println("El fichero datosbeca.bin no existe. Ejecuta antes el ejercicio 4.");
             return;
         }
 
         int becasConcedidas = 0;
-        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + FICHERO_BECAS))) {
+        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + "datosbeca.bin"))) {
             while (true) {
                 String nombre = leerFichero.readUTF();
                 String apellido = leerFichero.readUTF();
@@ -299,7 +289,7 @@ public class Ejercicios_2 {
         System.out.println("\nEjercicio 6: personas");
         int cantidad = leerEntero("Número de personas a introducir: ", 1, Integer.MAX_VALUE);
 
-        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + FICHERO_PERSONAS))) {
+        try (DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "datospersonas.dat"))) {
             for (int i = 1; i <= cantidad; i++) {
                 System.out.println("Persona " + i + ":");
                 escribirFichero.writeUTF(leerTexto("  Nombre: "));
@@ -315,20 +305,20 @@ public class Ejercicios_2 {
             System.out.println("Error al escribir el fichero.");
         }
 
-        mostrarPersonas(FICHERO_PERSONAS);
+        mostrarPersonas("datospersonas.dat");
     }
 
     public static void ejercicio7() {
         System.out.println("\nEjercicio 7: menores, adultos y mayores");
-        if (!new File(RUTA_FICHERO + FICHERO_MUCHOS_DATOS).exists()) {
-            System.out.println("El fichero " + FICHERO_MUCHOS_DATOS + " no existe en la carpeta " + RUTA_FICHERO + ".");
+        if (!new File(RUTA_FICHERO + "muchosdatos.bin").exists()) {
+            System.out.println("El fichero no existe.");
             return;
         }
 
         int menores = 0;
         int adultos = 0;
         int mayores = 0;
-        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + FICHERO_MUCHOS_DATOS));
+        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + "muchosdatos.bin"));
              DataOutputStream escribirMenores = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "menores.dat"));
              DataOutputStream escribirAdultos = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "adultos.dat"));
              DataOutputStream escribirMayores = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "mayores.dat"))) {
@@ -369,22 +359,22 @@ public class Ejercicios_2 {
             return;
         }
 
-        mostrarPersonas("menores.dat");
-        mostrarPersonas("adultos.dat");
-        mostrarPersonas("mayores.dat");
+        mostrarPersonas(RUTA_FICHERO + "menores.dat");
+        mostrarPersonas(RUTA_FICHERO + "adultos.dat");
+        mostrarPersonas(RUTA_FICHERO + "mayores.dat");
     }
 
     public static void ejercicio8() {
         System.out.println("\nEjercicio 8: temperaturas de un día");
-        if (!new File(RUTA_FICHERO + FICHERO_TEMPERATURAS).exists()) {
-            System.out.println("El fichero " + FICHERO_TEMPERATURAS + " no existe en la carpeta " + RUTA_FICHERO + ".");
+        if (!new File(RUTA_FICHERO + "temperaturas.txt").exists()) {
+            System.out.println("El fichero no existe.");
             return;
         }
         int dia = leerEntero("Día de septiembre (1-30): ", 1, 30);
 
         int registros = 0;
-        try (BufferedReader leerFichero = new BufferedReader(new FileReader(RUTA_FICHERO + FICHERO_TEMPERATURAS));
-             DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + FICHERO_SEPTEMP))) {
+        try (BufferedReader leerFichero = new BufferedReader(new FileReader(RUTA_FICHERO + "temperaturas.txt"));
+             DataOutputStream escribirFichero = new DataOutputStream(new FileOutputStream(RUTA_FICHERO + "Septemp.dat"))) {
             String linea;
             while ((linea = leerFichero.readLine()) != null) {
                 String[] partes = linea.split(",");
@@ -398,7 +388,7 @@ public class Ejercicios_2 {
                     registros++;
                 }
             }
-            System.out.println("Se han guardado " + registros + " registros del día " + dia + " en " + FICHERO_SEPTEMP + ".");
+            System.out.println("Se han guardado " + registros + " registros del día " + dia + " en Septemp.dat.");
         } catch (IOException e) {
             System.out.println("Error al procesar los ficheros.");
         }
@@ -406,8 +396,8 @@ public class Ejercicios_2 {
 
     public static void ejercicio9() {
         System.out.println("\nEjercicio 9: estadísticas de temperaturas");
-        if (!new File(RUTA_FICHERO + FICHERO_SEPTEMP).exists()) {
-            System.out.println("El fichero " + FICHERO_SEPTEMP + " no existe. Ejecuta antes el ejercicio 8.");
+        if (!new File(RUTA_FICHERO + "Septemp.dat").exists()) {
+            System.out.println("El fichero Septemp.dat no existe. Ejecuta antes el ejercicio 8.");
             return;
         }
 
@@ -418,7 +408,7 @@ public class Ejercicios_2 {
         int horaMinima = 0;
         int suma = 0;
         int total = 0;
-        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + FICHERO_SEPTEMP))) {
+        try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(RUTA_FICHERO + "Septemp.dat"))) {
             while (true) {
                 dia = leerFichero.readInt();
                 int hora = leerFichero.readInt();
@@ -452,10 +442,10 @@ public class Ejercicios_2 {
 
     public static void ejercicio10() {
         System.out.println("\nEjercicio 10: actualizar nóminas");
-        File original = new File(RUTA_FICHERO + FICHERO_NOMINAS);
+        File original = new File(RUTA_FICHERO + "nominas.bin");
         File temporal = new File(RUTA_FICHERO + "nominas_temporal.bin");
         if (!original.exists()) {
-            System.out.println("El fichero " + FICHERO_NOMINAS + " no existe en la carpeta " + RUTA_FICHERO + ".");
+            System.out.println("El fichero nominas.bin no existe en la carpeta " + RUTA_FICHERO + ".");
             return;
         }
 
@@ -495,7 +485,7 @@ public class Ejercicios_2 {
         }
 
         try (DataInputStream leerFichero = new DataInputStream(new FileInputStream(original))) {
-            System.out.println("Contenido actualizado de " + FICHERO_NOMINAS + ":");
+            System.out.println("Contenido actualizado de nominas.bin:");
             while (true) {
                 String nombre = leerFichero.readUTF();
                 int diasBaja = leerFichero.readInt();
